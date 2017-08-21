@@ -1,0 +1,16 @@
+{
+  "name": "chatbot-arogya-prototype",
+  "version": "0.0.0",
+  "description": "IR-based chatbot written in NodeJS",
+  "author": "Pornpawit",
+  "dependencies": {
+    "async": "^2.2.0",
+    "cheerio": "^0.19.0",
+    "child_process": "latest",
+    "fs": "latest",
+    "os": "latest",
+    "request": "^2.65.0",
+    "request-promise": "^4.1.1",
+    "url-parse": "^1.0.5"
+  }
+}
