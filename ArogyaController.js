@@ -1,5 +1,5 @@
 var vector = require('./vector.js');
-var latent = require('./latent.js');
+var latent = require('./svd.js');
 var os = require("os");
 var fs = require('fs');
 var pgp = require('pg-promise')();
@@ -8,17 +8,27 @@ var db = pgp(connectionString);
 vector.setDatabase(db,pgp);
 latent.setDatabase(db,pgp);
 
-var qa = "กินยาร่วมกับยาแผนปัจจุบันได้หรือไม่" ;
+/*var qa = "ลดน้ำหนัก" ;
 var vectorRank = vector.getQARank(qa);
 var latentRank = latent.getQARank(qa);
 var result = parameterWeighted(vectorRank, latentRank, 0.2) ;
 var result2 = parameterWeighted(vectorRank, latentRank, 0.4) ;
 var result3 = parameterWeighted(vectorRank, latentRank, 0.6) ;
 var result4 = parameterWeighted(vectorRank, latentRank, 0.8) ;
-showResult(result,1) ;
-showResult(result2,2) ;
-showResult(result3,3) ;
-showResult(result4,4) ;
+showResult(result,5) ;
+showResult(result2,6) ;
+showResult(result3,7) ;
+showResult(result4,8) ;*/
+
+exports.getQARank = function (qa){
+  var vectorRank = vector.getQARank(qa);
+  var latentRank = latent.getQARank(qa);
+  var cossim = parameterWeighted(vectorRank, latentRank, 0.4) ;
+  var result = showResult(cossim);
+
+  pgp.end();
+  return result ;
+}
 
 function parameterWeighted(vector, latent, weight) {
 	var weight1 = weight ;
@@ -66,19 +76,20 @@ function showResult(result,num){
   var k = '' ;
   result.sort(compareNumbers);
   var visited = [] ;
-  for(let n=0 ; n<10 ; n++){
+  for(let n=0 ; n<1 ; n++){
     for(key in temp){
       if(temp[key]==result[n]){
         if(!visited[key]){
         	data = searchByKey(key);
-        	k += '-----------QA------------'+os.EOL+data[0].question+os.EOL+'---------Anwser----------'+os.EOL+data[0].answer+os.EOL ;
+        	//k += '-----------QA------------'+os.EOL+data[0].question+os.EOL+'---------Anwser----------'+os.EOL+data[0].answer+os.EOL ;
         	/*console.log('');
         	console.log('-----------QA------------');
         	console.log(data[0].question);
         	console.log('---------Anwser----------');
         	console.log(data[0].answer);
         	console.log('');*/
-        	visited[key] = true ;
+        	//visited[key] = true ;
+          return data[0].answer ;
         }
       }
     }
@@ -103,7 +114,7 @@ function searchByKey(id){
 
     while(result === undefined) {
 	    require('deasync').sleep(100);
-	}
+	  }
 
     return result ;
 }
