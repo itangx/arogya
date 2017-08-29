@@ -11,6 +11,9 @@
     "os": "latest",
     "request": "^2.65.0",
     "request-promise": "^4.1.1",
-    "url-parse": "^1.0.5"
+    "url-parse": "^1.0.5",
+    "request": "^2.72.0",
+    "express": "*",
+    "body-parser": "*"
   }
 }
