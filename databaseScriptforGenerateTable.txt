@@ -1,0 +1,70 @@
+-- Create Sequence
+
+CREATE SEQUENCE public.faqcrawling_faq_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE SEQUENCE public.qindex_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE SEQUENCE public.aindex_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE SEQUENCE public.svdindex_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+-- Table: public.faqcrawling
+
+CREATE TABLE public.faqcrawling
+(
+    faq_id integer NOT NULL DEFAULT nextval('faqcrawling_faq_id_seq'::regclass),
+    question text COLLATE pg_catalog."default",
+    answer text COLLATE pg_catalog."default",
+    CONSTRAINT faqcrawling_pkey PRIMARY KEY (faq_id)
+)
+
+CREATE TABLE public.qindex
+(
+    qindex_id integer NOT NULL DEFAULT nextval('qindex_id_seq'::regclass),
+    word text COLLATE pg_catalog."default",
+    tf integer,
+    idf double precision,
+    faq_id integer NOT NULL,
+    CONSTRAINT faqindex_pkey PRIMARY KEY (qindex_id),
+    CONSTRAINT faq_id_fk FOREIGN KEY (faq_id) REFERENCES public.faqcrawling (faq_id) 
+)
+
+CREATE TABLE public.aindex
+(
+    qindex_id integer NOT NULL DEFAULT nextval('aindex_id_seq'::regclass),
+    word text COLLATE pg_catalog."default",
+    tf integer,
+    idf double precision,
+    faq_id integer NOT NULL,
+    CONSTRAINT faqindex_pkey PRIMARY KEY (aindex_id),
+    CONSTRAINT faq_id_fk FOREIGN KEY (faq_id) REFERENCES public.faqcrawling (faq_id) 
+)
+
+CREATE TABLE public.svdindex
+(
+    svdindex_id integer NOT NULL DEFAULT nextval('svdindex_id_seq'::regclass),
+    s_index double precision[],
+    v_index double precision[],
+    u_index double precision[],
+    CONSTRAINT "svdIndex_pkey" PRIMARY KEY (svdindex_id)
+)
